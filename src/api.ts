@@ -40,6 +40,8 @@ async function resolveActiveToken(): Promise<string | null> {
   return inMemoryAuthToken;
 }
 
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+
 async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = await resolveActiveToken();
   const headers: Record<string, string> = {
@@ -50,7 +52,8 @@ async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(path, { ...init, headers });
+  const targetUrl = path.startsWith('http') ? path : `${API_BASE}${path}`;
+  const res = await fetch(targetUrl, { ...init, headers });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) {
     throw new Error(json?.error || `Request failed with status ${res.status}`);

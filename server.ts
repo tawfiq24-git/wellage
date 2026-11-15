@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import QRCode from 'qrcode';
 import {
@@ -1361,6 +1362,13 @@ app.post(
   }),
 );
 
+// JSON 404 fallback for unmatched /api routes
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    error: `API endpoint not found: ${req.method} ${req.originalUrl}`,
+  });
+});
+
 // Centralized Express error handler (prevents leaking raw SQL errors)
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error('[WellAge API Error]', err);
@@ -1398,7 +1406,18 @@ async function startServer() {
   });
 }
 
-startServer().catch((err) => {
-  console.error('Failed to start WellAge server:', err);
-  process.exit(1);
-});
+const isMainModule =
+  typeof process !== 'undefined' &&
+  Array.isArray(process.argv) &&
+  Boolean(process.argv[1]) &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (!process.env.VERCEL && isMainModule) {
+  startServer().catch((err) => {
+    console.error('Failed to start WellAge server:', err);
+    process.exit(1);
+  });
+}
+
+export { app };
+export default app;

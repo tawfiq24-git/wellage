@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   Users,
 } from 'lucide-react';
+import heroFamilyImg from '../assets/images/hero_eldercare_family_1794717649952.jpg';
+import medRoutineImg from '../assets/images/elder_care_medication_1794717649280.jpg';
 
 interface LandingPageProps {
   onOpenPortal: (initialMode?: 'login' | 'register' | 'connect') => void;
@@ -124,7 +126,7 @@ export function LandingPage({ onOpenPortal }: LandingPageProps) {
                 <div className="h-full min-h-[300px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
                   {!heroImgFailed ? (
                     <img
-                      src="/src/assets/images/hero_eldercare_family_1794717649952.jpg"
+                      src={heroFamilyImg}
                       alt="Senior father and adult daughter reviewing daily medication schedule together on a tablet"
                       referrerPolicy="no-referrer"
                       onError={() => setHeroImgFailed(true)}
@@ -219,7 +221,7 @@ export function LandingPage({ onOpenPortal }: LandingPageProps) {
               <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100 h-60">
                 {!medImgFailed ? (
                   <img
-                    src="/src/assets/images/elder_care_medication_1794717649280.jpg"
+                    src={medRoutineImg}
                     alt="Organized weekly medication organizer next to fresh water on an oak table"
                     referrerPolicy="no-referrer"
                     onError={() => setMedImgFailed(true)}
