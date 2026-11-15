@@ -1,0 +1,6 @@
+{
+  "name": "ElderCare 360",
+  "description": "AI-powered collaborative elderly care, medication schedule tracking, doctor appointment management, and family care circle platform.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
